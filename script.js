@@ -94,6 +94,36 @@ function validateField(field) {
   return valid;
 }
 
+function openWhatsAppForForm(formType, form) {
+  var whatsappNumber = '27615164609';
+  var lines = [];
+
+  if (formType === 'subscribe') {
+    lines.push('New early access subscription');
+    lines.push('Name: ' + (form.elements.fullName ? form.elements.fullName.value : ''));
+    lines.push('Email: ' + (form.elements.email ? form.elements.email.value : ''));
+    lines.push('Phone: ' + (form.elements.phone ? form.elements.phone.value : ''));
+    lines.push('Role: ' + (form.elements.roleType ? form.elements.roleType.value : ''));
+    lines.push('Plan: ' + (form.elements.planInterest ? form.elements.planInterest.value : ''));
+    lines.push('Message: ' + (form.elements.subscribeMessage ? form.elements.subscribeMessage.value : ''));
+  } else {
+    lines.push('New contact enquiry');
+    lines.push('Name: ' + (form.elements.contactName ? form.elements.contactName.value : ''));
+    lines.push('Email: ' + (form.elements.contactEmail ? form.elements.contactEmail.value : ''));
+    lines.push('Phone: ' + (form.elements.contactPhone ? form.elements.contactPhone.value : ''));
+    lines.push('Role: ' + (form.elements.enquiryType ? form.elements.enquiryType.value : ''));
+    lines.push('Message: ' + (form.elements.contactMessage ? form.elements.contactMessage.value : ''));
+  }
+
+  var message = lines.join('\n');
+  var whatsappUrl = 'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent(message);
+  var whatsappWindow = window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+
+  if (!whatsappWindow) {
+    window.location.href = whatsappUrl;
+  }
+}
+
 /* Subscribe page form handling (early access waitlist) */
 function initSubscribeForm() {
   var form = document.getElementById('subscribeForm');
@@ -132,6 +162,7 @@ function initSubscribeForm() {
       /* localStorage may be unavailable, this is not critical to the demo */
     }
 
+    openWhatsAppForForm('subscribe', form);
     form.style.display = 'none';
     if (successPanel) {
       successPanel.classList.add('show');
@@ -163,6 +194,7 @@ function initContactForm() {
       return;
     }
 
+    openWhatsAppForForm('contact', form);
     form.style.display = 'none';
     if (successPanel) {
       successPanel.classList.add('show');
